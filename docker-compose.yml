@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: smartcos_app
+    command: npm run start
+    ports:
+      - '3000:3000'
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=test
+      - DB_PASSWORD=test
+      - DB_NAME=smartcos
+      - JWT_SECRET=supersecret
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:13
+    container_name: smartcos_db
+    restart: always
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: smartcos
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis:latest
+    container_name: smartcos_cache
+    restart: always
+    ports:
+      - '6379:6379'

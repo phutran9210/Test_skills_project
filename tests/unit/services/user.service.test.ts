@@ -197,6 +197,10 @@ describe('UserService', () => {
     });
 
     it('should create repository instance only once per service instance', () => {
+      // Create additional service instances to test repository creation
+      const service2 = new UserService();
+      const service3 = new UserService();
+      
       // Each service should get its own repository instance
       expect(AppDataSource.getRepository).toHaveBeenCalledTimes(3); // 1 from beforeEach + 2 from new instances
     });
